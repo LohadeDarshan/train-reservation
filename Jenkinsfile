@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME     = "TrainReservationApp"
+        IMAGE_NAME     = "trainreservationapp"
         CONTAINER_NAME = "Train-Reservation"
         APP_PORT       = "8081"
     }
