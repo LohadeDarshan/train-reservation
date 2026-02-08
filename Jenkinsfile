@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME     = "java-tomcat-app:1.0"
-        CONTAINER_NAME = "tomcatapp"
+        IMAGE_NAME     = "TrainReservationApp"
+        CONTAINER_NAME = "Train-Reservation"
         APP_PORT       = "8081"
     }
 
@@ -51,6 +51,14 @@ pipeline {
         stage('docker image build') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'dockerHubCred') {
+                    sh 'docker tag myserverd/$IMAGE_NAME  myserverd/$IMAGE_NAME'
+                    sh 'docker push myserverd/$IMAGE_NAME'
+                }
             }
         }
     }
