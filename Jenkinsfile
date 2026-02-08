@@ -50,14 +50,14 @@ pipeline {
         }
         stage('docker image build') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t trainreservationap .'
             }
         }
         stage('Push to Docker Hub') {
             steps {
                 withDockerRegistry(url: 'https://index.docker.io/v1/', credentialsId: 'dockerHubCred') {
-                    sh 'docker tag myserverd/$IMAGE_NAME:latest myserverd/$IMAGE_NAME:latest'
-                    sh 'docker push myserverd/$IMAGE_NAME:latest'
+                    sh 'docker tag trainreservationapp:latest myserverd/trainreservationapp:latest'
+                    sh 'docker push myserverd/trainreservationapp:latest'
                 }
             }
         }
