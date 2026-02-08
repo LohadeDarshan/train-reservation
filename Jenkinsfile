@@ -25,5 +25,19 @@ pipeline {
                 }
             }
         }
+        stage('code compile') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn compile'   // compile
+                }
+            }
+        }
+        stage('code test') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn test'   // test
+                }
+            }
+        }
     }
 }
