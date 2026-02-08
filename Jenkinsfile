@@ -1,37 +1,31 @@
-node {
-    def imageName = "java-tomcat-app:1.0"
-    def containerName = "tomcatapp"
-    def appPort = "8081"
+pipeline {
+    agent any
 
-    stage("Checkout Code") {
-        git branch: "master",
-            url: "https://github.com/Saikeerthi-3/train-reservation.git"
+    environment {
+        IMAGE_NAME     = "java-tomcat-app:1.0"
+        CONTAINER_NAME = "tomcatapp"
+        APP_PORT       = "8081"
     }
 
-    stage("Build WAR") {
-        sh "mvn clean package -DskipTests"
+    tools {
+        jdk 'JAVA_HOME'
+        maven 'MAVEN_HOME'
     }
 
-    stage("Verify WAR") {
-        sh "ls -l target/"
-        sh "ls -l target/*.war"
-    }
+    stages {
 
-    stage("Build Docker Image") {
-        sh "docker build -t ${imageName} ."
-    }
-
-    stage("Deploy Container") {
-        sh """
-        docker stop ${containerName} || true
-        docker rm ${containerName} || true
-        docker run -d --name ${containerName} -p ${appPort}:8080 ${imageName}
-        docker ps
-        """
-    }
-
-    stage("Test Application") {
-        sh "sleep 15"
-        sh "curl -I http://localhost:${appPort}/ || true"
+        stage('Checkout Code') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/LohadeDarshan/train-reservation.git'
+            }
+        }
+        stage('code validate') {
+            steps {
+                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn validate'   // validate the code
+                }
+            }
+        }
     }
 }
