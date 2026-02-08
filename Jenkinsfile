@@ -50,7 +50,7 @@ pipeline {
         }
         stage('docker image build') {
             steps {
-                sh 'docker build -t trainreservationap .'
+                sh 'docker build -t trainreservationapp:latest .'
             }
         }
         stage('Push to Docker Hub') {
