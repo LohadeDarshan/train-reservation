@@ -16,7 +16,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main
+                git branch: 'main'
                     url: 'https://github.com/LohadeDarshan/train-reservation.git'
             }
         }
